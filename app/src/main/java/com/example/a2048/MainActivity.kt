@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     var nums: Array<Array<Int>> = Array(4) { Array(4) {0} }
     var S: Array<Array<TextView>>? = null
-    var Srmwungvwi: Array<Array<TextView>>? = null
+    var Srmwungsrvwrvwi: Array<Array<TextView>>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
