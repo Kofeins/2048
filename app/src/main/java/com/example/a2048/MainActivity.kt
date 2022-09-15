@@ -1,6 +1,7 @@
 package com.example.a2048
 
 import android.accessibilityservice.GestureDescription
+import android.content.Context
 import android.gesture.Gesture
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,43 +10,34 @@ import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
+import com.example.a2048.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var detector: GestureDetectorCompat
-
+    lateinit var binding: ActivityMainBinding
     var nums: Array<Array<Int>> = Array(4) { Array(4) {0} }
     var S: Array<Array<TextView>>? = null
-    var Srmwungsrvwrvwi: Array<Array<TextView>>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         detector = GestureDetectorCompat(this, DiaryGestureListener())
 
-        S = Array(4) { Array(4) {findViewById(R.id.textView11)} }
+        S = Array(4) { Array(4) {binding.textView11} }
 
-
+        var textId: Array<Array<String>> = Array(4) { Array(4) {"0"} }
         var n: Int = 4
 
-        S!![0][0] = findViewById(R.id.textView11)
-        S!![0][1] = findViewById(R.id.textView12)
-        S!![0][2] = findViewById(R.id.textView13)
-        S!![0][3] = findViewById(R.id.textView14)
 
-        S!![1][0] = findViewById(R.id.textView21)
-        S!![1][1] = findViewById(R.id.textView22)
-        S!![1][2] = findViewById(R.id.textView23)
-        S!![1][3] = findViewById(R.id.textView24)
-
-        S!![2][0] = findViewById(R.id.textView31)
-        S!![2][1] = findViewById(R.id.textView32)
-        S!![2][2] = findViewById(R.id.textView33)
-        S!![2][3] = findViewById(R.id.textView34)
-
-        S!![3][0] = findViewById(R.id.textView41)
-        S!![3][1] = findViewById(R.id.textView42)
-        S!![3][2] = findViewById(R.id.textView43)
-        S!![3][3] = findViewById(R.id.textView44)
+        for(i in 0..3){
+            for(j in 0..3){
+                textId[i][j] = "textView${i + 1}${j + 1}"
+                val findId = resources.getIdentifier(textId[i][j], "id", packageName)
+                S!![i][j] = findViewById(findId)
+            }
+        }
 
         //R shift(0, 0, 4, 3, 0, 1)
         //L shift(0, 3, 4, 0, 0, -1)
@@ -116,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-// АЛГОРИТМ -- ГОВНО. ПЕРЕДЕЛАТЬ!!!!!!! НУ и да. Пресчитать цифры!))))
+// АЛГОРИТМ -- работает неправильно(сори, забыл стереть импульсивный комент Х) ). ПЕРЕДЕЛАТЬ!!!!!!! НУ и да. Пресчитать цифры!))))
     private fun shift(p1: Int, p2 :Int, p3 :Int, p4 :Int, s1: Int, s2: Int){
         val m1: Int = p3
         val m2: Int = p4
