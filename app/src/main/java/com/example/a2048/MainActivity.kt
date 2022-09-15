@@ -234,11 +234,7 @@ class MainActivity : AppCompatActivity() {
         for(i in 0..3){
             for (j in 0..3) {
                 S!![i][j].text = nums[i][j].toString()
-                //if(S!![i][j].text == "0"){
-                   // S!![i][j].setBackgroundColor(Color.parseColor("##FFD700"))
 
-
-                //}
             }
         }
     }
