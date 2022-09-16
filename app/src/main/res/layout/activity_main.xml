@@ -280,10 +280,22 @@
         android:text="Last :"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.138" />
+
+    <TextView
+        android:id="@+id/Best"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Best : "
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Score"
+        app:layout_constraintTop_toBottomOf="@+id/Score" />
 
     <TextView
         android:id="@+id/Score"
@@ -293,10 +305,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        app:layout_constraintVertical_bias="0.479" />
 
     <Button
         android:id="@+id/Restart"
@@ -306,9 +318,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/Score"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.655"
         app:layout_constraintStart_toEndOf="@+id/Score"
-        app:layout_constraintTop_toTopOf="@+id/Score" />
+        app:layout_constraintTop_toTopOf="@+id/Score"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

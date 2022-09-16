@@ -15,6 +15,12 @@ import com.example.a2048.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private var Score: Int = 2
+    private var Best: Int = 0
+    private var canLeft: Boolean = true
+    private var canRight: Boolean = true
+    private var canTop: Boolean = true
+    private var canBottom: Boolean = true
+    private var zeros: Boolean = true
     private lateinit var detector: GestureDetectorCompat
     private val colorMap = mutableMapOf<String, Int>()
     lateinit var binding: ActivityMainBinding
@@ -122,6 +128,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toRestart(){
+        if (Best < Score){
+            Best = Score
+            binding.Best.text = "Best : $Best"
+        }
         nums = Array(4) { Array(4) {0} }
         Score = 0
         binding.Score.text = "Score : $Score"
@@ -174,7 +184,35 @@ class MainActivity : AppCompatActivity() {
         Log.d("MyLog", "ERROR HERE last work")
         turnTo(range1!!, param, add)
 
-        randomS()
+        if (zeros == true){
+            canLeft = true
+            canLeft = true
+            canLeft = true
+            canLeft = true
+            randomS()
+        }
+
+        if (zeros == false){
+            when(param){
+                'L' -> {
+                    canLeft = false
+                }
+                'R' -> {
+                    canRight = false
+                }
+                'T' -> {
+                    canTop = false
+                }
+                'B' -> {
+                    canBottom = false
+                }
+            }
+        }
+
+        if(canLeft == false && canRight == false && canTop == false && canBottom == false){
+            toRestart()
+        }
+        Log.d("MyLog", "Bools : $canLeft, $canRight, $canTop, $canBottom, $zeros,")
         rename()
 
     }
@@ -219,10 +257,14 @@ class MainActivity : AppCompatActivity() {
     private fun turnTo(range1: IntProgression, param: Char, add: Int){
         var i: Int = 0 //stroke
         var j: Int = 0 // colomns
+        var allZero:Int = 0
     var zero: Int = -1
         for (s in range1){
             zero = -1
             for (c in range1){
+                if(nums[s][c] == 0){
+                    allZero++
+                }
                 if (param == 'L' || param == 'R'){
 
                     i = s
@@ -254,7 +296,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+
+
         }
+
+        if (allZero > 0){
+            zeros = true
+        }
+        else{
+            zeros = false
+        }
+
     }
 
 
@@ -262,8 +314,12 @@ class MainActivity : AppCompatActivity() {
         for(i in 0..3){
             for (j in 0..3) {
                 S!![i][j].text = nums[i][j].toString()
-                if (S!![i][j].text != "0"){
+                if (S!![i][j].text != "0" && nums[i][j] < 2049){
                     val color = colorMap.getValue(nums[i][j].toString())
+                    S!![i][j].setBackgroundColor(color)
+                }
+                else if(S!![i][j].text != "0" && nums[i][j] > 2049){
+                    val color = ContextCompat.getColor(this, R.color.other)
                     S!![i][j].setBackgroundColor(color)
                 }
                 else{
@@ -274,6 +330,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun randomS(){
         val i: Int = (0..3).random()
