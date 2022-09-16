@@ -7,4 +7,34 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!--         Custom colors 2048     -->
+    <color name="T2">#FFF2E8DF</color>
+    <color name="T4">#FFF2E4CE</color>
+    <color name="T8">#FFF2AF7C</color>
+    <color name="T16">#FFF59765</color>
+    <color name="T32">#FFF2785F</color>
+    <color name="T64">#FFF2563D</color>
+    <color name="T128">#FFF2D277</color>
+    <color name="T256">#FFF2CD66</color>
+    <color name="T512">#FFF2C955</color>
+    <color name="T1024">#FFF2C341</color>
+    <color name="T2048">#FFF2BF30</color>
+    <color name="other">#FF3D3A33</color>
+
+
+    <integer-array name="Colors_2048">
+        <item>@color/T2</item>
+        <item>@color/T4</item>
+        <item>@color/T8</item>
+        <item>@color/T16</item>
+        <item>@color/T32</item>
+        <item>@color/T64</item>
+        <item>@color/T128</item>
+        <item>@color/T256</item>
+        <item>@color/T512</item>
+        <item>@color/T1024</item>
+        <item>@color/T2048</item>
+    </integer-array>
 </resources>

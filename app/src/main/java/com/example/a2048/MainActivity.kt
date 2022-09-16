@@ -1,55 +1,64 @@
 package com.example.a2048
 
-import android.accessibilityservice.GestureDescription
-import android.content.Context
-import android.gesture.Gesture
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import com.example.a2048.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
+    private var Score: Int = 2
     private lateinit var detector: GestureDetectorCompat
+    private val colorMap = mutableMapOf<String, Int>()
     lateinit var binding: ActivityMainBinding
     var nums: Array<Array<Int>> = Array(4) { Array(4) {0} }
     var S: Array<Array<TextView>>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val colors = resources.getIntArray(R.array.Colors_2048)
+
         detector = GestureDetectorCompat(this, DiaryGestureListener())
+
+        //Заполняем мапу
+        var toMapIn = 2
+        for(i in 0..10){
+            colorMap.put(toMapIn.toString(), colors[i])
+            toMapIn *= 2
+        }
+
+        binding.Score.text = "Score : $Score"
+
+        binding.Restart.setOnClickListener{
+            toRestart()
+        }
+
+
 
         S = Array(4) { Array(4) {binding.textView11} }
 
         var textId: Array<Array<String>> = Array(4) { Array(4) {"0"} }
-        var n: Int = 4
-
 
         for(i in 0..3){
             for(j in 0..3){
+
                 textId[i][j] = "textView${i + 1}${j + 1}"
                 val findId = resources.getIdentifier(textId[i][j], "id", packageName)
                 S!![i][j] = findViewById(findId)
             }
         }
-
-
-
-        //R shift(0, 0, 4, 3, 0, 1)
-        //L shift(0, 3, 4, 0, 0, -1)
-        //Down shift(0, 0, 3, 4, 1, 0)
-        //Up shift(3, 0, 0, 4, -1, 0)
-
         randomS()
-
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -112,6 +121,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun toRestart(){
+        nums = Array(4) { Array(4) {0} }
+        Score = 0
+        binding.Score.text = "Score : $Score"
+        randomS()
+        rename()
+    }
+
+    private fun setScore(score: Int){
+        if (Score < score){
+            Score = score
+            binding.Score.text = "Score : $Score"
+        }
+
+    }
+
     private fun newShift(param: Char){
         var range1: IntProgression? = null
         var range2: IntProgression? = null
@@ -153,7 +178,7 @@ class MainActivity : AppCompatActivity() {
         rename()
 
     }
-// РАБОТАЕТ ИДЕАЛЬНО
+
     private fun findPair(range1: IntProgression, range2: IntProgression, param: Char, add: Int) {
         //L 0 2 3
 
@@ -172,6 +197,7 @@ class MainActivity : AppCompatActivity() {
                     if (nums[i][j] == next && nums[i][j] != 0){
                         nums[i][j] *= 2
                         nums[i][j + add] = 0
+                        setScore(nums[i][j])
                     }
                 }
                 else if (param == 'T' || param == 'B'){
@@ -181,13 +207,15 @@ class MainActivity : AppCompatActivity() {
                     if (nums[i][j] == next && nums[i][j] != 0){
                         nums[i][j] *= 2
                         nums[i + add][j] = 0
+                        setScore(nums[i][j])
                     }
                 }
+
             }
         }
 
     }
-/// ТУТ КАКАЯ ТО ОБИШКА
+
     private fun turnTo(range1: IntProgression, param: Char, add: Int){
         var i: Int = 0 //stroke
         var j: Int = 0 // colomns
@@ -218,7 +246,7 @@ class MainActivity : AppCompatActivity() {
                     if (nums[i][j] == 0 && zero == -1){
                         zero = i
                     }
-                    else if(nums[i][j] != 0 && zero != j && zero != -1){
+                    else if(nums[i][j] != 0 && zero != i && zero != -1){
                         nums[zero][j] = nums[i][j]
                         nums[i][j] = 0
                         zero += add
@@ -234,6 +262,14 @@ class MainActivity : AppCompatActivity() {
         for(i in 0..3){
             for (j in 0..3) {
                 S!![i][j].text = nums[i][j].toString()
+                if (S!![i][j].text != "0"){
+                    val color = colorMap.getValue(nums[i][j].toString())
+                    S!![i][j].setBackgroundColor(color)
+                }
+                else{
+                    val color = ContextCompat.getColor(this, R.color.white)
+                    S!![i][j].setBackgroundColor(color)
+                }
 
             }
         }
@@ -253,31 +289,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onSwipeBottom() {
-
-        //shift(0, 0, 3, 4, 1, 0)
         newShift('B')
-        Toast.makeText(this, "BottomSwipe", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "BottomSwipe", Toast.LENGTH_LONG).show()
+        binding.Last.text = "Last : Bottom"
     }
 
     private fun onSwipeTop() {
-
-        //shift(3, 0, 0, 4, -1, 0)
         newShift('T')
-        Toast.makeText(this, "TopSwipe", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "TopSwipe", Toast.LENGTH_LONG).show()
+        binding.Last.text = "Last : Top"
     }
 
     private fun onSwipeLeft() {
-
-        //shift(0, 3, 4, 0, 0, -1)
         newShift('L')
-        Toast.makeText(this, "LeftSwipe", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "LeftSwipe", Toast.LENGTH_LONG).show()
+        binding.Last.text = "Last : Left"
     }
 
     private fun onSwipeRigth() {
-
-        //shift(0, 0, 4, 3, 0, 1)
         newShift('R')
-        Toast.makeText(this, "RightSwipe", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "RightSwipe", Toast.LENGTH_LONG).show()
+        binding.Last.text = "Last : Right"
 
     }
 
