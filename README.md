@@ -3,6 +3,7 @@ Problems:
 
 1) Smth wrong with OnTouchEvent function.
 My English is very bed))
+
 Я OnTouchEvent реализацию брал в интернете, и так получилось, что она считывает движения везде,
 кроме как раз таки "игрового поля"
 
